@@ -1,4 +1,5 @@
 from telebot import TeleBot
+from json import load
 
 
 def handle(bot: TeleBot):
@@ -7,9 +8,10 @@ def handle(bot: TeleBot):
         if message.chat.type != 'private':
             return
 
+        with open("messages.json") as file:
+            messages = load(file)
+
         bot.send_message(
             message.chat.id,
-            'Привет, ' + message.from_user.first_name +
-            '!\nОпишите задачу текстом, прикрепите пример в виде фотографии или видеоролика, который поможет решению задачи'
-            '\nWrite /help fro help.',
+            messages['start'].format(message.from_user.first_name)
         )
